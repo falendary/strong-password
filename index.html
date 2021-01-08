@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="Big Font">
+    <meta 
+     name='viewport' 
+     content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' 
+/>
+
+    <title>Strong Password</title>
+
+    <style type="text/css">
+
+        * {
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: ;
+        }
+
+        .text-center {
+            text-align: center
+        }
+
+        .overflow-hidden {
+            overflow: hidden;
+        }
+
+        .float-left {
+            float: left;
+        }
+
+        .float-right {
+            float: right;
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .app-container {
+            width: 512px;
+            margin: 0 auto;
+        }
+
+        .password-input {
+            width: 430px;
+            height: 36px;
+            font-size: 18px;
+            border: 1px solid #000;
+        }
+
+        .copy-password-button {
+
+            height: 36px;
+            margin: 0;
+            float: right;
+            background: #fff;
+            border: 1px solid #000;
+            width: 72px;
+            cursor: pointer;
+
+        }
+
+        .copy-password-button:hover {
+            background: #ddd;
+        }
+
+        .generate-password-button {
+
+            height: 32px;
+            margin: 16px auto;
+            display: block;
+            width: 100px;
+            background: #ddd;
+            border: 1px solid #000;
+            font-size: 16px;
+
+        }
+
+        .length-input {
+            width: 28px;
+            position: relative;
+            top: -2px;
+        }
+
+        .password-settings-item {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .password-settings-label {
+            position: absolute;
+            left: 36px;
+        }
+
+        @media screen and (max-width: 700px) {
+            .app-container {
+                width: 100%;
+            }
+
+            .copy-password-button {
+                margin: 16px auto;
+                width: 100%;
+            }
+            .generate-password-button {
+                width: 100%;
+            }
+
+            .password-settings-item {
+                margin-bottom: 16px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div>
+
+    <div class="container">
+
+        <h1 class="text-center">Strong Password</h1>
+
+        <div class="app-container">
+
+            <div class="overflow-hidden">
+
+                <div class="password-input-holder">
+
+                    <input type="text" class="password-input passwordInput" value="42">
+
+                    <button title="copy" class="copy-password-button copyPasswordButton">Copy</button>
+
+                </div>
+
+                <div>
+                    <button class="generate-password-button generatePasswordButton">Generate</button>
+                </div>
+
+            </div>
+
+            <div>
+
+                <div class="password-settings-item">
+                    <input type="text" name="" value="16" id="lengthInput" class="length-input lengthInput">
+                    <label class="password-settings-label" for="lengthInput">Length</label>
+                </div>
+                
+                <div class="password-settings-item">
+                    <input type="checkbox" name="" id="lowercaseInput" class="lowercase-input lowercaseInput" checked>
+                    <label class="password-settings-label" for="lowercaseInput">Lowercase only</label>
+                   
+                </div>
+
+                <div class="password-settings-item">
+                    <input type="checkbox" name="" id="numbersInput" class="numbers-input numbersInput" checked>
+                    <label class="password-settings-label" for="numbersInput">Numbers</label>
+                </div>
+
+
+                <div class="password-settings-item">
+                    <input type="checkbox" name="" id="specialInput" class="special-input specialInput">
+                    <label class="password-settings-label" for="specialInput">Special Symbols</label>
+                </div>
+
+            </div>
+  
+        </div>
+
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+
+    var passwordInput = document.querySelector('.passwordInput');
+    var generatePasswordButton = document.querySelector('.generatePasswordButton');
+    var copyPasswordButton = document.querySelector('.copyPasswordButton');
+
+    // settings below
+    var lengthInput = document.querySelector('.lengthInput');
+    var lowercaseInput = document.querySelector('.lowercaseInput');
+    var numbersInput = document.querySelector('.numbersInput');
+    var specialInput = document.querySelector('.specialInput');
+
+    var numbers = ['0','1','2','3','4','5','6','7','8','9','10'];
+
+    var special = ['_', '$', '#', '@', '&', '!', '?', '%', '^', '*', '(', ')', '-', '+', '=', '{', '}', '[', ']'];
+
+    var lowerChars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+    var upperChars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+    
+    function getRandomInt(min, max){
+
+        return Math.floor(Math.random() * (max - min + 1) + min);
+
+    }
+
+    function charIsNumber(c){
+        return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].indexOf(c) !== -1
+    }
+
+    function generatePassword(){
+
+        var password = '';
+
+
+        var length = parseInt(lengthInput.value, 10);
+        var lowercaseOnly = lowercaseInput.checked;
+        var hasNumbers = numbersInput.checked;
+        var hasSpecial = specialInput.checked;
+        
+
+        var chars = []
+
+        if (hasNumbers) {
+            chars = chars.concat(numbers);
+        }
+        if (hasSpecial) {
+            chars = chars.concat(special);
+        }
+
+        chars = chars.concat(lowerChars);
+
+        if (!lowercaseOnly) {
+            chars = chars.concat(upperChars);
+        }
+
+        var maxRandIndex = chars.length - 1;
+
+        for (var i = 0; i < length; i = i + 1) {
+
+            var randIndex = getRandomInt(0, maxRandIndex);
+
+            password = password + chars[randIndex]
+
+
+        }
+
+        passwordInput.value = password;
+
+
+    }
+
+
+    function init(){
+
+        generatePasswordButton.addEventListener('click', function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            generatePassword();
+
+        });
+
+        copyPasswordButton.addEventListener('click', function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            passwordInput.select();
+            passwordInput.setSelectionRange(0, 99999);
+
+
+
+            document.execCommand("copy");
+
+            passwordInput.blur();
+
+        })
+
+        generatePassword();
+
+    }
+
+    init();
+    
+
+
+</script>
+
+</body>
+</html>
